@@ -1,23 +1,40 @@
 package org.springframework.samples.petclinic.vacination;
 
+import java.sql.SQLException;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
 public class VaccinationService {
+
+    @Autowired
+    VaccinationRepository vaccinationRepository;
+
     public List<Vaccination> getAll(){
-        return null;
+        return vaccinationRepository.findAll();
     }
 
     public List<Vaccine> getAllVaccines(){
-        return null;
+        return vaccinationRepository.findAllVaccines();
     }
 
     public Vaccine getVaccine(String typeName) {
-        return null;
+        return vaccinationRepository.findVaccineByName(typeName);
     }
 
+    //@Transactional(rollbackFor = UnfeasibleVaccinationException.class)
     public Vaccination save(Vaccination p) throws UnfeasibleVaccinationException {
-        return null;       
+        Vaccine otherVaccine = p.getVaccine();
+        //if(otherVaccine != p.getVaccinatedPet())
+            vaccinationRepository.save(p);
+            return p;
+        //throw new UnfeasibleVaccinationException();
     }
 
+ 
     
 }
